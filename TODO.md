@@ -40,13 +40,13 @@
 > **Commit:** `feat: add seed data script`
 
 ## Phase 6: Product API Routes
-- [ ] `GET /api/products` — list active products (with category, displayUnit); admin sees all
-- [ ] `POST /api/products` — create product (admin only)
-- [ ] `GET /api/products/[id]` — get single product
-- [ ] `PUT /api/products/[id]` — update product (admin only)
-- [ ] `DELETE /api/products/[id]` — soft-delete product (admin only, sets isActive=false)
-- [ ] All prices/quantities handled via decimal.js
-- [ ] Auth guards on mutation routes
+- [x] `GET /api/products` — list active products (with category, displayUnit); admin sees all
+- [x] `POST /api/products` — create product (admin only)
+- [x] `GET /api/products/[id]` — get single product
+- [x] `PUT /api/products/[id]` — update product (admin only)
+- [x] `DELETE /api/products/[id]` — soft-delete product (admin only, sets isActive=false)
+- [x] All prices/quantities handled via decimal.js
+- [x] Auth guards on mutation routes
 > **Commit:** `feat: implement product CRUD API routes`
 
 ## Phase 7: Order API Routes
