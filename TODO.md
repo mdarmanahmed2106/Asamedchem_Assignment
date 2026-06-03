@@ -62,15 +62,15 @@
 > **Commit:** `feat: implement order management API routes`
 
 ## Phase 8: Admin UI
-- [ ] Admin layout with sidebar navigation (Products, Orders)
-- [ ] Products page: table with SKU, name, category, stock (display units), price (per display unit), status
-- [ ] Add Product dialog/modal with form
-- [ ] Edit Product dialog/modal
-- [ ] Soft-delete product with confirmation
-- [ ] Orders page: table with order ID, seller name, total, status, date
-- [ ] Order detail view with line items
-- [ ] Update order status dropdown
-- [ ] All quantities/prices displayed in display units using lib/units.js
+- [x] Admin layout with sidebar navigation (Products, Orders)
+- [x] Products page: table with SKU, name, category, stock (display units), price (per display unit), status
+- [x] Add Product dialog/modal with form
+- [x] Edit Product dialog/modal
+- [x] Soft-delete product with confirmation
+- [x] Orders page: table with order ID, seller name, total, status, date
+- [x] Order detail view with line items
+- [x] Update order status dropdown
+- [x] All quantities/prices displayed in display units using lib/units.js
 > **Commit:** `feat: build admin dashboard UI`
 
 ## Phase 9: Seller UI

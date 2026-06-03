@@ -1,0 +1,254 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import Decimal from "decimal.js";
+import { Badge } from "@/components/ui/badge";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { toDisplayQty, calcDisplayPrice } from "@/lib/units";
+
+const STATUS_OPTIONS = ["PENDING", "CONFIRMED", "FULFILLED", "CANCELLED"];
+
+const statusVariant = {
+  PENDING: "outline",
+  CONFIRMED: "default",
+  FULFILLED: "secondary",
+  CANCELLED: "destructive",
+};
+
+export default function AdminOrdersPage() {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [detailOpen, setDetailOpen] = useState(false);
+
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/orders");
+      const data = await res.json();
+      setOrders(data);
+    } catch (err) {
+      console.error("Failed to fetch orders:", err);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  async function handleStatusChange(orderId, newStatus) {
+    try {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      });
+
+      if (res.ok) {
+        fetchOrders();
+      }
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
+  }
+
+  function handleRowClick(order) {
+    setSelectedOrder(order);
+    setDetailOpen(true);
+  }
+
+  function formatTotal(totalINR) {
+    const total = new Decimal(totalINR.toString());
+    return `₹${total.toFixed(2)}`;
+  }
+
+  function formatDate(dateStr) {
+    return new Date(dateStr).toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  function formatItemQty(item) {
+    const qty = new Decimal(item.orderedQty.toString());
+    return `${qty.toFixed(2)} ${item.orderedUnit.abbreviation}`;
+  }
+
+  function formatItemTotal(item) {
+    const total = new Decimal(item.lineTotalINR.toString());
+    return `₹${total.toFixed(2)}`;
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <p className="text-muted-foreground">Loading orders...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      <div>
+        <h2 className="text-2xl font-bold">Orders</h2>
+        <p className="text-muted-foreground">View and manage all orders</p>
+      </div>
+
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Seller</TableHead>
+              <TableHead className="text-right">Total</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Update Status</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {orders.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
+                  No orders found
+                </TableCell>
+              </TableRow>
+            ) : (
+              orders.map((order) => (
+                <TableRow
+                  key={order.id}
+                  className="cursor-pointer"
+                  onClick={() => handleRowClick(order)}
+                >
+                  <TableCell className="font-mono text-sm">
+                    {order.id.slice(0, 8)}...
+                  </TableCell>
+                  <TableCell>{order.user.name}</TableCell>
+                  <TableCell className="text-right">{formatTotal(order.totalINR)}</TableCell>
+                  <TableCell>
+                    <Badge variant={statusVariant[order.status]}>{order.status}</Badge>
+                  </TableCell>
+                  <TableCell>{formatDate(order.createdAt)}</TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <Select
+                      value={order.status}
+                      onValueChange={(val) => handleStatusChange(order.id, val)}
+                    >
+                      <SelectTrigger className="w-36">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {STATUS_OPTIONS.map((s) => (
+                          <SelectItem key={s} value={s}>
+                            {s}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      {/* Order Detail Dialog */}
+      <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Order Details</DialogTitle>
+          </DialogHeader>
+          {selectedOrder && (
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Order ID</p>
+                  <p className="font-mono">{selectedOrder.id}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Seller</p>
+                  <p>{selectedOrder.user.name} ({selectedOrder.user.email})</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Status</p>
+                  <Badge variant={statusVariant[selectedOrder.status]}>
+                    {selectedOrder.status}
+                  </Badge>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Date</p>
+                  <p>{formatDate(selectedOrder.createdAt)}</p>
+                </div>
+                {selectedOrder.notes && (
+                  <div className="col-span-2">
+                    <p className="text-muted-foreground">Notes</p>
+                    <p>{selectedOrder.notes}</p>
+                  </div>
+                )}
+              </div>
+
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product</TableHead>
+                      <TableHead>SKU</TableHead>
+                      <TableHead className="text-right">Qty</TableHead>
+                      <TableHead className="text-right">Line Total</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {selectedOrder.items.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell>{item.product.name}</TableCell>
+                        <TableCell className="font-mono text-sm">
+                          {item.product.sku}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatItemQty(item)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {formatItemTotal(item)}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              <div className="text-right text-lg font-bold">
+                Total: {formatTotal(selectedOrder.totalINR)}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
