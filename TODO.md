@@ -50,15 +50,15 @@
 > **Commit:** `feat: implement product CRUD API routes`
 
 ## Phase 7: Order API Routes
-- [ ] `POST /api/orders` — create order with transaction (seller only)
+- [x] `POST /api/orders` — create order with transaction (seller only)
   - Implement exact algorithm from spec
   - Dimension validation
   - Stock sufficiency check
   - Atomic transaction
-- [ ] `GET /api/orders` — list orders (admin: all, seller: own only)
-- [ ] `GET /api/orders/[id]` — get order with items (admin: any, seller: own only)
-- [ ] `PATCH /api/orders/[id]/status` — update order status (admin only)
-- [ ] All decimal operations use decimal.js
+- [x] `GET /api/orders` — list orders (admin: all, seller: own only)
+- [x] `GET /api/orders/[id]` — get order with items (admin: any, seller: own only)
+- [x] `PATCH /api/orders/[id]/status` — update order status (admin only)
+- [x] All decimal operations use decimal.js
 > **Commit:** `feat: implement order management API routes`
 
 ## Phase 8: Admin UI
