@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Package, ShoppingCart, ClipboardList, LogOut, Menu, User } from "lucide-react";
-import { CartProvider } from "@/components/seller/cart-context";
+import { CartProvider, useCart } from "@/components/seller/cart-context";
 
 const navItems = [
   { href: "/seller/catalog", label: "Catalog Grid", icon: Package },
@@ -20,6 +20,8 @@ function SidebarContent({ pathname, onNavigate }) {
   const { data: session } = useSession();
   const user = session?.user;
   const initials = user?.name ? user.name.split(" ").map(n => n[0]).join("").toUpperCase() : "S";
+  const { items } = useCart();
+  const cartCount = items.length;
 
   return (
     <div className="flex flex-col h-full bg-background border-r">
@@ -42,27 +44,40 @@ function SidebarContent({ pathname, onNavigate }) {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname.startsWith(item.href);
+          const isCart = item.href === "/seller/cart";
           return (
             <Link
               key={item.href}
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-sm text-xs font-medium uppercase tracking-wider transition-all",
+                "flex items-center justify-between px-3 py-2 rounded-sm text-xs font-medium uppercase tracking-wider transition-all",
                 isActive
                   ? "bg-black text-white dark:bg-white dark:text-black font-semibold shadow-none border border-black dark:border-white"
                   : "text-muted-foreground hover:bg-neutral-100 hover:text-foreground dark:hover:bg-neutral-900 border border-transparent"
               )}
             >
-              <Icon className="h-4 w-4" />
-              {item.label}
+              <div className="flex items-center gap-3">
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </div>
+              {isCart && cartCount > 0 && (
+                <span className={cn(
+                  "flex h-4 min-w-[16px] items-center justify-center rounded-full px-1.5 text-[9px] font-bold border",
+                  isActive
+                    ? "bg-white text-black border-white"
+                    : "bg-black text-white border-black dark:bg-white dark:text-black dark:border-white"
+                )}>
+                  {cartCount}
+                </span>
+              )}
             </Link>
           );
         })}
       </nav>
 
-      {/* Footer Profile & Logout */}
-      <div className="p-4 border-t space-y-3">
+      {/* Footer Profile */}
+      <div className="p-4 border-t">
         {user && (
           <div className="flex items-center gap-3 px-2 py-1.5">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center border border-border bg-neutral-100 dark:bg-neutral-900 font-bold text-xs uppercase text-foreground">
@@ -74,14 +89,6 @@ function SidebarContent({ pathname, onNavigate }) {
             </div>
           </div>
         )}
-        <Button
-          variant="outline"
-          className="w-full justify-center gap-2 rounded-sm text-xs uppercase tracking-wider hover:bg-neutral-100 dark:hover:bg-neutral-900"
-          onClick={() => signOut({ callbackUrl: "/login" })}
-        >
-          <LogOut className="h-3.5 w-3.5" />
-          Sign Out
-        </Button>
       </div>
     </div>
   );
@@ -90,6 +97,15 @@ function SidebarContent({ pathname, onNavigate }) {
 export default function SellerLayout({ children }) {
   const pathname = usePathname();
   const [sheetOpen, setSheetOpen] = useState(false);
+  const { data: session } = useSession();
+  const user = session?.user;
+
+  function getPageTitle() {
+    if (pathname.startsWith("/seller/catalog")) return "Catalog Grid";
+    if (pathname.startsWith("/seller/cart")) return "My Cart";
+    if (pathname.startsWith("/seller/orders")) return "Order History";
+    return "Seller Portal";
+  }
 
   return (
     <CartProvider>
@@ -100,32 +116,56 @@ export default function SellerLayout({ children }) {
         </aside>
 
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Mobile header */}
-          <header className="md:hidden flex items-center justify-between p-4 border-b bg-background">
+          {/* Top Header Bar (Unified for Desktop and Mobile) */}
+          <header className="flex h-14 items-center justify-between border-b bg-background px-4 md:px-6">
             <div className="flex items-center gap-3">
-              <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-8 w-8 rounded-sm">
-                    <Menu className="h-4 w-4" />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="w-64 p-0 flex flex-col">
-                  <SidebarContent
-                    pathname={pathname}
-                    onNavigate={() => setSheetOpen(false)}
-                  />
-                </SheetContent>
-              </Sheet>
-              <span className="text-xs font-bold uppercase tracking-wider">AsaMedChem Seller</span>
+              {/* Mobile menu trigger */}
+              <div className="md:hidden">
+                <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
+                  <SheetTrigger asChild>
+                    <Button variant="outline" size="icon" className="h-8 w-8 rounded-sm">
+                      <Menu className="h-4 w-4" />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="left" className="w-64 p-0 flex flex-col">
+                    <SidebarContent
+                      pathname={pathname}
+                      onNavigate={() => setSheetOpen(false)}
+                    />
+                  </SheetContent>
+                </Sheet>
+              </div>
+              
+              {/* Breadcrumb / Title */}
+              <span className="text-xs font-bold uppercase tracking-wider text-foreground">
+                {getPageTitle()}
+              </span>
             </div>
-            <div className="h-6 w-6 flex items-center justify-center border border-foreground bg-foreground text-background font-bold text-xs">
-              S
+
+            <div className="flex items-center gap-4">
+              {user && (
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="text-xs font-medium text-foreground">{user.name}</span>
+                  <span className="text-[10px] text-muted-foreground bg-neutral-100 dark:bg-neutral-900 border px-1.5 py-0.5 rounded-sm">
+                    {user.role}
+                  </span>
+                </div>
+              )}
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-8 px-3 rounded-sm text-xs uppercase tracking-wider gap-1.5 hover:bg-neutral-100 dark:hover:bg-neutral-900 border-border"
+                onClick={() => signOut({ callbackUrl: "/login" })}
+              >
+                <LogOut className="h-3.5 w-3.5" />
+                Sign Out
+              </Button>
             </div>
           </header>
 
           {/* Main Content Pane */}
           <main className="flex-1 p-6 md:p-10 overflow-auto">
-            <div className="max-w-7xl mx-auto w-full bg-background border border-border p-6 md:p-8 rounded-sm min-h-[calc(100vh-6rem)]">
+            <div className="max-w-7xl mx-auto w-full bg-background border border-border p-6 md:p-8 rounded-sm min-h-[calc(100vh-8rem)]">
               {children}
             </div>
           </main>

@@ -109,16 +109,13 @@ export default function CatalogPage() {
   function handleAddToCart() {
     if (!qty || parseFloat(qty) <= 0) return;
 
-    const unit = units.find((u) => u.id === selectedUnitId);
     addItem(
       selectedProduct,
       selectedUnitId,
       qty
     );
-    setAddedMessage(
-      `Added ${qty} ${unit?.abbreviation || ""} of ${selectedProduct.name} to cart`
-    );
     setQty("");
+    setAddDialogOpen(false);
   }
 
   if (loading) {
