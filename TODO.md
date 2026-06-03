@@ -10,9 +10,9 @@
 > **Commit:** `feat: initialize Next.js 14 project with dependencies`
 
 ## Phase 2: Prisma Schema & Database
-- [ ] Write `prisma/schema.prisma` with all models exactly as specified
-- [ ] Create `lib/prisma.js` Prisma client singleton
-- [ ] Generate Prisma client
+- [x] Write `prisma/schema.prisma` with all models exactly as specified
+- [x] Create `lib/prisma.js` Prisma client singleton
+- [x] Generate Prisma client
 > **Commit:** `feat: add Prisma schema and client singleton`
 
 ## Phase 3: Unit Conversion Library

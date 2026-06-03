@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(SELLER)
+  createdAt    DateTime @default(now())
+  orders       Order[]
+}
+
+enum Role {
+  ADMIN
+  SELLER
+}
+
+model UnitOption {
+  id               String      @id @default(cuid())
+  label            String
+  abbreviation     String      @unique
+  dimension        Dimension
+  conversionFactor Decimal     @db.Decimal(20, 10)
+  products         Product[]   @relation("ProductDisplayUnit")
+  orderItems       OrderItem[] @relation("OrderItemUnit")
+}
+
+enum Dimension {
+  WEIGHT
+  VOLUME
+  COUNT
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String    @unique
+  products Product[]
+}
+
+model Product {
+  id               String      @id @default(cuid())
+  sku              String      @unique
+  name             String
+  description      String?
+  categoryId       String?
+  category         Category?   @relation(fields: [categoryId], references: [id])
+  stockBaseQty     Decimal     @db.Decimal(20, 6)
+  displayUnitId    String
+  displayUnit      UnitOption  @relation("ProductDisplayUnit", fields: [displayUnitId], references: [id])
+  pricePerBaseUnit Decimal     @db.Decimal(20, 6)
+  isActive         Boolean     @default(true)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  orderItems       OrderItem[]
+}
+
+model Order {
+  id        String      @id @default(cuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  status    OrderStatus @default(PENDING)
+  totalINR  Decimal     @db.Decimal(20, 6)
+  notes     String?
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  items     OrderItem[]
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  FULFILLED
+  CANCELLED
+}
+
+model OrderItem {
+  id               String     @id @default(cuid())
+  orderId          String
+  order            Order      @relation(fields: [orderId], references: [id])
+  productId        String
+  product          Product    @relation(fields: [productId], references: [id])
+  orderedUnitId    String
+  orderedUnit      UnitOption @relation("OrderItemUnit", fields: [orderedUnitId], references: [id])
+  orderedQty       Decimal    @db.Decimal(20, 6)
+  baseQty          Decimal    @db.Decimal(20, 6)
+  pricePerBaseUnit Decimal    @db.Decimal(20, 6)
+  lineTotalINR     Decimal    @db.Decimal(20, 6)
+  createdAt        DateTime   @default(now())
+}
