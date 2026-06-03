@@ -30,13 +30,13 @@
 > **Commit:** `feat: add NextAuth authentication with role-based access`
 
 ## Phase 5: Seed Data
-- [ ] Create `prisma/seed.js` with:
+- [x] Create `prisma/seed.js` with:
   - UnitOptions: gram (1), kilogram (1000), millilitre (1), litre (1000), unit (1)
   - Categories: Raw Materials, Solvents, Lab Supplies, Equipment
   - Admin user: admin@example.com / admin123
   - Seller user: seller@example.com / seller123
   - Sample products (5-10) across categories with realistic stock and prices
-- [ ] Add seed script to package.json
+- [x] Add seed script to package.json
 > **Commit:** `feat: add seed data script`
 
 ## Phase 6: Product API Routes
