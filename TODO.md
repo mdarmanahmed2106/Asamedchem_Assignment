@@ -74,14 +74,14 @@
 > **Commit:** `feat: build admin dashboard UI`
 
 ## Phase 9: Seller UI
-- [ ] Seller layout with navigation (Catalog, Cart, My Orders)
-- [ ] Catalog page: product grid/list with search and category filter
-- [ ] Add to cart with unit selection and quantity input
-- [ ] Cart page: line items, unit conversion preview, running total
-- [ ] Place order button (calls POST /api/orders)
-- [ ] My Orders page: order history with status badges
-- [ ] Order detail view
-- [ ] All quantities/prices displayed in display units using lib/units.js
+- [x] Seller layout with navigation (Catalog, Cart, My Orders)
+- [x] Catalog page: product grid/list with search and category filter
+- [x] Add to cart with unit selection and quantity input
+- [x] Cart page: line items, unit conversion preview, running total
+- [x] Place order button (calls POST /api/orders)
+- [x] My Orders page: order history with status badges
+- [x] Order detail view
+- [x] All quantities/prices displayed in display units using lib/units.js
 > **Commit:** `feat: build seller catalog and order UI`
 
 ## Phase 10: Polish & Validation
