@@ -53,50 +53,79 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-muted px-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">Inventory & Order Management</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            {error && (
-              <p className="text-sm text-destructive text-center">{error}</p>
-            )}
-            <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
-            </Button>
-          </form>
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            <p>Demo accounts:</p>
-            <p>Admin: admin@example.com / admin123</p>
-            <p>Seller: seller@example.com / seller123</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+      <div className="w-full max-w-md space-y-6">
+        <div className="flex flex-col space-y-2 text-center">
+          <div className="inline-flex h-10 w-10 items-center justify-center rounded-none border-2 border-black bg-black text-white font-bold text-lg mx-auto dark:border-white dark:bg-white dark:text-black">
+            I
           </div>
-        </CardContent>
-      </Card>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            Inventory & Order System
+          </h1>
+          <p className="text-sm text-muted-foreground">
+            Enter your credentials to access the portal
+          </p>
+        </div>
+
+        <Card className="border border-border shadow-none rounded-sm">
+          <CardContent className="pt-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Email Address</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  className="rounded-sm border-border bg-background focus:ring-0 focus:border-black"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-xs uppercase tracking-wider font-semibold text-muted-foreground">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  className="rounded-sm border-border bg-background focus:ring-0 focus:border-black"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              {error && (
+                <div className="p-3 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-sm">
+                  <p className="text-xs font-medium text-black dark:text-white text-center">{error}</p>
+                </div>
+              )}
+              <Button type="submit" className="w-full rounded-sm btn-monochrome-hover bg-black text-white hover:bg-neutral-800 dark:bg-white dark:text-black dark:hover:bg-neutral-200" disabled={loading}>
+                {loading ? "Signing in..." : "Sign In"}
+              </Button>
+            </form>
+
+            <div className="mt-8 border-t border-border pt-6">
+              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3 text-center">Demo Accounts</p>
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div className="p-2 border border-border rounded-sm bg-neutral-50 dark:bg-neutral-900">
+                  <p className="font-bold text-foreground">Admin Portal</p>
+                  <p className="text-muted-foreground">admin@example.com</p>
+                  <p className="text-muted-foreground mt-1">pwd: <span className="font-mono bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">admin123</span></p>
+                </div>
+                <div className="p-2 border border-border rounded-sm bg-neutral-50 dark:bg-neutral-900">
+                  <p className="font-bold text-foreground">Seller Catalog</p>
+                  <p className="text-muted-foreground">seller@example.com</p>
+                  <p className="text-muted-foreground mt-1">pwd: <span className="font-mono bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 rounded">seller123</span></p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        <p className="px-8 text-center text-xs text-muted-foreground">
+          Secure authentication powered by NextAuth.js
+        </p>
+      </div>
     </div>
   );
 }

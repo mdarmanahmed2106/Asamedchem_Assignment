@@ -256,7 +256,7 @@ export default function CatalogPage() {
               </div>
 
               {addedMessage && (
-                <p className="text-sm text-green-600">{addedMessage}</p>
+                <p className="text-xs font-medium text-foreground text-center bg-neutral-100 dark:bg-neutral-900 p-2 border border-border rounded-sm">{addedMessage}</p>
               )}
 
               <div className="flex justify-end gap-2">
