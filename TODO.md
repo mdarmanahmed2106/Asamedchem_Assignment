@@ -22,11 +22,11 @@
 > **Commit:** `feat: implement unit conversion library`
 
 ## Phase 4: Authentication
-- [ ] Configure NextAuth.js v5 with Credentials provider in `lib/auth.js`
-- [ ] Create `app/api/auth/[...nextauth]/route.js`
-- [ ] Implement login page at `app/login/page.jsx`
-- [ ] Add middleware for route protection (`middleware.js`)
-- [ ] Role-based redirects: ADMIN → /admin/products, SELLER → /seller/catalog
+- [x] Configure NextAuth.js v5 with Credentials provider in `lib/auth.js`
+- [x] Create `app/api/auth/[...nextauth]/route.js`
+- [x] Implement login page at `app/login/page.jsx`
+- [x] Add middleware for route protection (`middleware.js`)
+- [x] Role-based redirects: ADMIN → /admin/products, SELLER → /seller/catalog
 > **Commit:** `feat: add NextAuth authentication with role-based access`
 
 ## Phase 5: Seed Data
