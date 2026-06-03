@@ -16,9 +16,9 @@
 > **Commit:** `feat: add Prisma schema and client singleton`
 
 ## Phase 3: Unit Conversion Library
-- [ ] Implement `lib/units.js` with toBaseQty, toDisplayQty, calcLineTotal, calcDisplayPrice
-- [ ] All functions use Decimal from decimal.js
-- [ ] Add JSDoc comments to each function
+- [x] Implement `lib/units.js` with toBaseQty, toDisplayQty, calcLineTotal, calcDisplayPrice
+- [x] All functions use Decimal from decimal.js
+- [x] Add JSDoc comments to each function
 > **Commit:** `feat: implement unit conversion library`
 
 ## Phase 4: Authentication
