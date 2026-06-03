@@ -134,7 +134,7 @@ export default function CartPage() {
         <p className="text-muted-foreground">{items.length} item(s) in your cart</p>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>

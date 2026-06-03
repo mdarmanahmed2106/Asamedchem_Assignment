@@ -93,7 +93,7 @@ export default function SellerOrdersPage() {
         <p className="text-muted-foreground">View your order history</p>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -169,7 +169,7 @@ export default function SellerOrdersPage() {
                 )}
               </div>
 
-              <div className="rounded-md border">
+              <div className="rounded-md border overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>

@@ -119,7 +119,7 @@ export default function AdminOrdersPage() {
         <p className="text-muted-foreground">View and manage all orders</p>
       </div>
 
-      <div className="rounded-md border">
+      <div className="rounded-md border overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -213,7 +213,7 @@ export default function AdminOrdersPage() {
                 )}
               </div>
 
-              <div className="rounded-md border">
+              <div className="rounded-md border overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>

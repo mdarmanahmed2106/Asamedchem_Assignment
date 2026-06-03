@@ -1,66 +1,66 @@
 # CHECKLIST.md — Acceptance Criteria
 
 ## Data Integrity
-- [ ] All money/quantity math uses `decimal.js` — zero native JS `number` for calculations
-- [ ] All unit conversion logic is in `lib/units.js` — zero inline arithmetic elsewhere
-- [ ] Prices stored as INR per base unit in DB
-- [ ] Stock stored in base units in DB
-- [ ] UI displays prices per display unit
-- [ ] UI displays stock in display units
-- [ ] Order items snapshot `pricePerBaseUnit` at time of order
+- [x] All money/quantity math uses `decimal.js` — zero native JS `number` for calculations
+- [x] All unit conversion logic is in `lib/units.js` — zero inline arithmetic elsewhere
+- [x] Prices stored as INR per base unit in DB
+- [x] Stock stored in base units in DB
+- [x] UI displays prices per display unit
+- [x] UI displays stock in display units
+- [x] Order items snapshot `pricePerBaseUnit` at time of order
 
 ## Unit Conversions
-- [ ] `toBaseQty` correctly multiplies displayQty by conversionFactor
-- [ ] `toDisplayQty` correctly divides baseQty by conversionFactor
-- [ ] `calcLineTotal` correctly multiplies baseQty by pricePerBaseUnit
-- [ ] `calcDisplayPrice` correctly multiplies pricePerBaseUnit by conversionFactor
-- [ ] Dimension mismatch returns 400 error on order creation
+- [x] `toBaseQty` correctly multiplies displayQty by conversionFactor
+- [x] `toDisplayQty` correctly divides baseQty by conversionFactor
+- [x] `calcLineTotal` correctly multiplies baseQty by pricePerBaseUnit
+- [x] `calcDisplayPrice` correctly multiplies pricePerBaseUnit by conversionFactor
+- [x] Dimension mismatch returns 400 error on order creation
 
 ## Order Creation
-- [ ] Wrapped in a single Prisma `$transaction`
-- [ ] Stock sufficiency validated before decrement
-- [ ] Stock decremented by correct baseQty
-- [ ] Each OrderItem stores: orderedQty, orderedUnitId, baseQty, pricePerBaseUnit (snapshot), lineTotalINR
-- [ ] order.totalINR = sum of all lineTotalINR
+- [x] Wrapped in a single Prisma `$transaction`
+- [x] Stock sufficiency validated before decrement
+- [x] Stock decremented by correct baseQty
+- [x] Each OrderItem stores: orderedQty, orderedUnitId, baseQty, pricePerBaseUnit (snapshot), lineTotalINR
+- [x] order.totalINR = sum of all lineTotalINR
 
 ## Authentication & Authorization
-- [ ] Login works with email/password
-- [ ] Admin can access /admin/* routes
-- [ ] Seller can access /seller/* routes
-- [ ] Admin cannot access /seller/* routes
-- [ ] Seller cannot access /admin/* routes
-- [ ] API routes enforce role-based access
-- [ ] Unauthenticated users redirected to /login
+- [x] Login works with email/password
+- [x] Admin can access /admin/* routes
+- [x] Seller can access /seller/* routes
+- [x] Admin cannot access /seller/* routes
+- [x] Seller cannot access /admin/* routes
+- [x] API routes enforce role-based access
+- [x] Unauthenticated users redirected to /login
 
 ## Admin Features
-- [ ] View all products with stock in display units and price per display unit
-- [ ] Create new product
-- [ ] Edit existing product
-- [ ] Soft-delete product (sets isActive=false)
-- [ ] View all orders
-- [ ] View order details with line items
-- [ ] Update order status (PENDING → CONFIRMED → FULFILLED or CANCELLED)
+- [x] View all products with stock in display units and price per display unit
+- [x] Create new product
+- [x] Edit existing product
+- [x] Soft-delete product (sets isActive=false)
+- [x] View all orders
+- [x] View order details with line items
+- [x] Update order status (PENDING → CONFIRMED → FULFILLED or CANCELLED)
 
 ## Seller Features
-- [ ] Browse active products catalog
-- [ ] Search products by name
-- [ ] Filter products by category
-- [ ] Add product to cart with unit selection
-- [ ] View cart with line totals and grand total
-- [ ] Place order (creates order via API)
-- [ ] View own order history
-- [ ] View order details
+- [x] Browse active products catalog
+- [x] Search products by name
+- [x] Filter products by category
+- [x] Add product to cart with unit selection
+- [x] View cart with line totals and grand total
+- [x] Place order (creates order via API)
+- [x] View own order history
+- [x] View order details
 
 ## Code Quality
-- [ ] No secrets committed to git
-- [ ] `.env.example` present with empty values
-- [ ] Prisma schema matches specification exactly
-- [ ] All models have correct relations
-- [ ] Responsive design works on mobile
+- [x] No secrets committed to git
+- [x] `.env.example` present with empty values
+- [x] Prisma schema matches specification exactly
+- [x] All models have correct relations
+- [x] Responsive design works on mobile
 
 ## Seed Data
-- [ ] UnitOptions seeded: gram, kilogram, millilitre, litre, unit
-- [ ] Categories seeded: Raw Materials, Solvents, Lab Supplies, Equipment
-- [ ] Admin user seeded: admin@example.com
-- [ ] Seller user seeded: seller@example.com
-- [ ] Sample products seeded with realistic data
+- [x] UnitOptions seeded: gram, kilogram, millilitre, litre, unit
+- [x] Categories seeded: Raw Materials, Solvents, Lab Supplies, Equipment
+- [x] Admin user seeded: admin@example.com
+- [x] Seller user seeded: seller@example.com
+- [x] Sample products seeded with realistic data

@@ -85,11 +85,11 @@
 > **Commit:** `feat: build seller catalog and order UI`
 
 ## Phase 10: Polish & Validation
-- [ ] Run through CHECKLIST.md — verify every item
-- [ ] Verify all decimal operations use decimal.js
-- [ ] Verify no inline unit math outside lib/units.js
-- [ ] Test order creation end-to-end
-- [ ] Ensure responsive design on mobile
-- [ ] Add loading states and error handling
-- [ ] Final cleanup and code review
+- [x] Run through CHECKLIST.md — verify every item
+- [x] Verify all decimal operations use decimal.js
+- [x] Verify no inline unit math outside lib/units.js
+- [x] Test order creation end-to-end
+- [x] Ensure responsive design on mobile
+- [x] Add loading states and error handling
+- [x] Final cleanup and code review
 > **Commit:** `chore: final polish and checklist validation`
